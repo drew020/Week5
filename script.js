@@ -87,11 +87,31 @@ const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 function getLearnerData(course, ag, submissions) {
 
     //Function Variables
+    let vCourseInfoName = CourseInfo.name;
+    let vAssignmentgruopName = AssignmentGroup.name;
+
     let vTotalNumberOfStudent = 0;
     let vUniqueLearnerIDCount = [];
     let vTotalNumberOfAssignments = 0;
+    let vTotalNumberOfPossibleAssignmentTurnins = 0;
 
-//#region display total number of students
+    //#region Display general purpose
+    console.log(`---Data Summery---`);
+    //#endregion Display general purpose
+
+    //#region Display Course Info
+    console.log(`Course Info: ${vCourseInfoName}`);
+    //#endregion Display Course Info
+
+    //#region Display relevant assignment groups of submissions
+    console.log(`Assignment Group: ${vAssignmentgruopName}`);
+    //#endregion Display relevant assignment groups of submissions
+
+    //#region Display Statistic div
+    console.log(`\n---Data Statistics---`);
+    //#endregion Display Statistic div
+
+    //#region display total number of students
     for (let i = 0; i < submissions.length; i++) {
         let j;
 
@@ -107,31 +127,40 @@ function getLearnerData(course, ag, submissions) {
         //debug
         //console.log(vLocalID)
     }
-    
+
     vTotalNumberOfStudent = vUniqueLearnerIDCount.length;
     console.log(`Total number of student in Submissions: ${vUniqueLearnerIDCount.length}`);
-//#endregion display total number of students
+    //#endregion display total number of students
 
-// display total number of possible Assignments per student
-vTotalNumberOfAssignments = ag.assignments.length;
-console.log(`Total number of possible assignments in submission: ${vTotalNumberOfAssignments}`)
+    //#region display total number of possible Assignments per student
+    vTotalNumberOfAssignments = ag.assignments.length;
+    console.log(`Total number of possible assignments in submission: ${vTotalNumberOfAssignments}`)
+    //#endregion display total number of possible Assignments per student
 
-// display current total number of assignments turned out of total possible
-// display avg total assignment turn in of student
-// display total Assignments turned in on-time vs total possible
-// display total Assignments turned in late vs total possible
-// display avg grade of student of submissions.
-// display avg grade per assignment of submissions.
+    //#region display current total number of assignments turned in of total possible total
+    vTotalNumberOfPossibleAssignmentTurnins = vTotalNumberOfStudent * vTotalNumberOfAssignments;
+    console.log(`Total possible number of assigments turn-in: ${vTotalNumberOfPossibleAssignmentTurnins}`)
+    //#endregion display current total number of assignments turned in of total possible total
 
-// display student information case by case
-//     display student overall grade avg
-//     display student ranking grade
-//     dispaly number of assignments turned in vs total number of assignments
-//     display assignment information case by case
-//         display assignment ID
-//         display if assignment was submitted
-//             display grade of assignment vs avg grade in submissions
-//             display days need to complete vs avg days needed to complete in submissions
+    //#region Total number of assignments turned-in to total possible
+
+    //#region Total number of assignments turned-in to total possible
+
+    // display total Assignments turned in on-time vs total possible
+    // display total Assignments turned in late vs total possible
+    // display avg total assignment turn in of student
+    // display avg grade of student of submissions.
+    // display avg grade per assignment of submissions.
+
+    // display student information case by case
+    //     display student overall grade avg
+    //     display student ranking grade
+    //     dispaly number of assignments turned in vs total number of assignments
+    //     display assignment information case by case
+    //         display assignment ID
+    //         display if assignment was submitted
+    //             display grade of assignment vs avg grade in submissions
+    //             display days need to complete vs avg days needed to complete in submissions
 
 
 
