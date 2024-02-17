@@ -80,21 +80,29 @@ const LearnerSubmissions = [
 //#endregion Objects and array
 
 //#region main process
+//Avoid using global variables - as such all variables are scoped within main function. 
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 //#endregion main process
 
 //#region Functions
 function getLearnerData(course, ag, submissions) {
 
-    //Function Variables
-    let vCourseInfoName = CourseInfo.name;
-    let vAssignmentgruopName = AssignmentGroup.name;
-
+    //#region Function local Variables 
+    // General
+    let vCourseInfoName = course.name;
+    let vAssignmentgruopName = ag.name;
+    // Statistics
     let vTotalNumberOfStudent = 0;
-    let vUniqueLearnerIDCount = [];
     let vTotalNumberOfAssignments = 0;
     let vTotalNumberOfPossibleAssignmentTurnins = 0;
     let vTotalNumberOfAssignmentTurnins = 0;
+    let vTotalPossibleAssignmentPoint = 0;
+    // Array Sets: ALL ARE CONST
+    const vUniqueLearnerIDCount = [];
+    const vAssignmentNameArray = [];
+    const vAssignmentWeightArray = [];
+    //#endregion Function Variables 
+
 
     //#region Display general purpose
     console.log(`---Data Summery---`);
@@ -135,21 +143,24 @@ function getLearnerData(course, ag, submissions) {
 
     //#region display total number of possible Assignments per student
     vTotalNumberOfAssignments = ag.assignments.length;
-    console.log(`Total number of possible assignments in submission: ${vTotalNumberOfAssignments}`)
+    console.log(`Total number of possible assignments in submissions: ${vTotalNumberOfAssignments}`)
     //#endregion display total number of possible Assignments per student
 
     //#region display current total number of assignments turned in of total possible total
     vTotalNumberOfPossibleAssignmentTurnins = vTotalNumberOfStudent * vTotalNumberOfAssignments;
-    console.log(`Total number of possible assigment turn-ins: ${vTotalNumberOfPossibleAssignmentTurnins}`)
+    console.log(`Total number of possible assigment turned in: ${vTotalNumberOfPossibleAssignmentTurnins}`)
     //#endregion display current total number of assignments turned in of total possible total
 
     //#region Total number of assignments turned-in to total possible
     vTotalNumberOfAssignmentTurnins = submissions.length;
-    console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins/vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2)}%)`);
+    console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins / vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2) * 100}%)`);
+    //#endregion Total number of assignments turned-in to total possible
 
-    //#region Total number of assignments turned-in to total possible
+    //#region display total Assignments turned in on-time vs total possible
 
-    // display total Assignments turned in on-time vs total possible
+    //#endregion display total Assignments turned in on-time vs total possible
+
+
     // display total Assignments turned in late vs total possible
     // display avg total assignment turn in of student
     // display avg grade of student of submissions.
@@ -157,22 +168,42 @@ function getLearnerData(course, ag, submissions) {
 
     // display student information case by case
     //     display student overall grade avg
-    //     display student ranking grade
-    //     dispaly number of assignments turned in vs total number of assignments
+    //     display student ranking by grade
+    //     display number of assignments turned in vs total number of assignments
     //     display assignment information case by case
     //         display assignment ID
     //         display if assignment was submitted
     //             display grade of assignment vs avg grade in submissions
     //             display days need to complete vs avg days needed to complete in submissions
 
+    //#region Display Array div
+    console.log(`\n---Data Array---`);
+    //#endregion Display Array div
 
+    //#region display unique student ID array
+    console.log(`Student ID: (${vTotalNumberOfStudent}-Items) ${vUniqueLearnerIDCount}`)
+    //#endregion display unique student ID array
+
+    //#region display Assignment array
+    for (let i = 0; i < AssignmentGroup.assignments.length; i++) {
+
+        vAssignmentNameArray[i] = (AssignmentGroup.assignments[i].name);
+        vAssignmentWeightArray[i] = (AssignmentGroup.assignments[i].points_possible)
+        vTotalPossibleAssignmentPoint += AssignmentGroup.assignments[i].points_possible;
+    }
+
+    function fAssignmentWeightString(lLength, lName, lWeight) {
+        for (let i = 0; i < lLength; i++) {
+            console.log(`      Name: ${lName[i]}\n      Point Value: ${lWeight[i]}\n      Grade Weight: ${(lWeight[i] / vTotalPossibleAssignmentPoint).toPrecision(2) * 100}%\n`);
+        }
+    }
+
+    console.log("Assignment Names and weights: " + "(" + vTotalNumberOfAssignments + "-Items)");
+    console.log(fAssignmentWeightString(vTotalNumberOfAssignments, vAssignmentNameArray, vAssignmentWeightArray))
+    //#endregion display Assignment array
 
 }
 
-function isAssignmentOntime() {
-    let rBool;
-    return (rBool);
-}
 //#endregion Functions
 
 

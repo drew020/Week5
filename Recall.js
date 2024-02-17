@@ -159,7 +159,7 @@
 // console.log(myArray);
 
 // // Remove the string of your choice from the end of the array.
-// myArray.push("end");
+// myArray.push("string of your choice");
 // myArray.pop();
 // console.log(myArray);
 
