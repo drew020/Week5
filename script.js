@@ -1,3 +1,42 @@
+/* 
+Requirement Weight
+
+
+
+Use at least two if/else statements to control program flow. Optionally, use at least one switch statement.
+10%
+
+Use try/catch statements to manage potential errors in the code, such as incorrectly formatted or typed data being fed into your program.
+5%
+
+Utilize at least two different types of loops.
+5%
+
+Utilize at least one loop control keyword such as break or continue.
+3%
+
+Create and/or manipulate arrays and objects.
+10%
+
+Demonstrate the retrieval, manipulation, and removal of items in an array or properties in an object.
+5%
+
+Use functions to handle repeated tasks.
+10%
+
+Program outputs processed data as described above. Partial credit will be earned depending on the level of adherence to the described behavior.
+20%
+
+Ensure that the program runs without errors (comment out things that do not work, and explain your blockers - you can still receive partial credit).
+10%
+
+Commit frequently to the git repository.
+5%
+
+Include a README file that contains a description of your application.
+2%
+ */
+
 //#region Objects and array
 
 // The provided course information.
@@ -81,7 +120,7 @@ const LearnerSubmissions = [
 
 //#region main process
 //Avoid using global variables - as such all variables are scoped within main function. 
-const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 //#endregion main process
 
 //#region Functions
@@ -91,6 +130,10 @@ function getLearnerData(course, ag, submissions) {
     // General
     let vCourseInfoName = course.name;
     let vAssignmentgruopName = ag.name;
+
+    //for the switch
+    let vboolgate1 = false;
+    let vboolgate2 = false;
     // Statistics
     let vTotalNumberOfStudent = 0;
     let vTotalNumberOfAssignments = 0;
@@ -156,12 +199,15 @@ function getLearnerData(course, ag, submissions) {
     console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins / vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2) * 100}%)`);
     //#endregion Total number of assignments turned-in to total possible
 
+
+
     //#region display total Assignments turned in on-time vs total possible
 
     //#endregion display total Assignments turned in on-time vs total possible
 
-
     // display total Assignments turned in late vs total possible
+
+
     // display avg total assignment turn in of student
     // display avg grade of student of submissions.
     // display avg grade per assignment of submissions.
@@ -187,21 +233,21 @@ function getLearnerData(course, ag, submissions) {
     //#region display Assignment array
     for (let i = 0; i < AssignmentGroup.assignments.length; i++) {
 
-        vAssignmentNameArray[i] = (AssignmentGroup.assignments[i].name);
-        vAssignmentWeightArray[i] = (AssignmentGroup.assignments[i].points_possible)
+        vAssignmentNameArray.push(AssignmentGroup.assignments[i].name);
+        vAssignmentWeightArray.push(AssignmentGroup.assignments[i].points_possible)
         vTotalPossibleAssignmentPoint += AssignmentGroup.assignments[i].points_possible;
     }
 
-    function fAssignmentWeightString(lLength, lName, lWeight) {
+        function fAssignmentWeightString(lLength/* : number */, lName/* : Array */, lWeight/* : Array */) {
+
         for (let i = 0; i < lLength; i++) {
             console.log(`      Name: ${lName[i]}\n      Point Value: ${lWeight[i]}\n      Grade Weight: ${(lWeight[i] / vTotalPossibleAssignmentPoint).toPrecision(2) * 100}%\n`);
         }
     }
 
     console.log("Assignment Names and weights: " + "(" + vTotalNumberOfAssignments + "-Items)");
-    console.log(fAssignmentWeightString(vTotalNumberOfAssignments, vAssignmentNameArray, vAssignmentWeightArray))
+    fAssignmentWeightString(vTotalNumberOfAssignments, vAssignmentNameArray, vAssignmentWeightArray);
     //#endregion display Assignment array
-
 }
 
 //#endregion Functions
