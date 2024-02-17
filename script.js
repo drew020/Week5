@@ -94,6 +94,7 @@ function getLearnerData(course, ag, submissions) {
     let vUniqueLearnerIDCount = [];
     let vTotalNumberOfAssignments = 0;
     let vTotalNumberOfPossibleAssignmentTurnins = 0;
+    let vTotalNumberOfAssignmentTurnins = 0;
 
     //#region Display general purpose
     console.log(`---Data Summery---`);
@@ -139,10 +140,12 @@ function getLearnerData(course, ag, submissions) {
 
     //#region display current total number of assignments turned in of total possible total
     vTotalNumberOfPossibleAssignmentTurnins = vTotalNumberOfStudent * vTotalNumberOfAssignments;
-    console.log(`Total possible number of assigments turn-in: ${vTotalNumberOfPossibleAssignmentTurnins}`)
+    console.log(`Total number of possible assigment turn-ins: ${vTotalNumberOfPossibleAssignmentTurnins}`)
     //#endregion display current total number of assignments turned in of total possible total
 
     //#region Total number of assignments turned-in to total possible
+    vTotalNumberOfAssignmentTurnins = submissions.length;
+    console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins/vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2)}%)`);
 
     //#region Total number of assignments turned-in to total possible
 
