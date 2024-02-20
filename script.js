@@ -120,7 +120,16 @@ const LearnerSubmissions = [
 
 //#region main process
 //Avoid using global variables - as such, all variables are scoped within main function. 
-getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+try {
+    getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+    console.log("Program Execution Passed")
+}
+catch {
+    err = console.log("Program Execution Error")
+}
+finally {
+    console.log("Program Execution Complete")
+}
 //#endregion main process
 
 //#region Function
@@ -131,8 +140,6 @@ function getLearnerData(course, ag, submissions) {
     let vCourseInfoName = course.name;
     let vAssignmentgruopName = ag.name;
 
-    //for the switch
-    let vboolgate1 = false;
     // Statistics
     let vTotalNumberOfStudent = 0;
     let vTotalNumberOfAssignments = 0;
@@ -141,12 +148,15 @@ function getLearnerData(course, ag, submissions) {
     let vTotalPossibleAssignmentPoint = 0;
     let vTotalNumberOfAssignmentsOntime = 0;
     let vTotalNumberOfAssignmentsNotOnTime = 0;
+
     // Array Sets: ALL ARE CONST
     const vUniqueLearnerIDCount = [];
     const vAssignmentNameArray = [];
     const vAssignmentWeightArray = [];
+    const vAssignmentTurninaArray = [];
     //#endregion Function Variables 
 
+    fSwitch(0);
 
     //#region Display general purpose
     console.log(`---Data Summery---`);
@@ -200,6 +210,11 @@ function getLearnerData(course, ag, submissions) {
     console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins / vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2) * 100}%)`);
     //#endregion Total number of assignments turned-in to total possible
 
+    //#endregion display total Assignments turned in on-time vs total possible
+    fSwitch(1);
+    //#endregion display total Assignments turned in late vs total possible
+    fSwitch(2);
+
     // display avg total assignment turn in of student
     // display avg grade of student of submissions.
     // display avg grade per assignment of submissions.
@@ -233,7 +248,7 @@ function getLearnerData(course, ag, submissions) {
     function fAssignmentWeightString(lLength/* : number */, lName/* : Array */, lWeight/* : Array */) {
 
         for (let i = 0; i < lLength; i++) {
-            console.log(`      Name: ${lName[i]}\n      Point Value: ${lWeight[i]}\n      Grade Weight: ${(lWeight[i] / vTotalPossibleAssignmentPoint).toPrecision(2) * 100}%\n`);
+            console.log(`${fMySpace()}Name: ${lName[i]}\n${fMySpace()}Point Value: ${lWeight[i]}\n${fMySpace()}Grade Weight: ${(lWeight[i] / vTotalPossibleAssignmentPoint).toPrecision(2) * 100}%\n`);
         }
     }
 
@@ -245,39 +260,51 @@ function getLearnerData(course, ag, submissions) {
 
         switch (nstate) {
             case 0:
-                console.log(`Assignments turned in on-time and otherwise: (${LearnerSubmissions.length}-Items)\n`);
                 //#region display total Assignments turned in on-time vs total Turned in
-
                 for (let i = 0; i < LearnerSubmissions.length; i++) {
                     let lLearnerSubmissionsID = LearnerSubmissions[i].assignment_id;
                     let lAssignmentIDIndex = lLearnerSubmissionsID - 1;
 
                     if (new Date(LearnerSubmissions[i].submission.submitted_at) < new Date(AssignmentGroup.assignments[lAssignmentIDIndex].due_at)) {
-                        console.log(`      ${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" On-time\n`);
+                        //console.log
+                        vAssignmentTurninaArray.push(`${fMySpace()}${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" On-time\n`);
                         vTotalNumberOfAssignmentsOntime++;
                     }
                     else {
-                        console.log(`      ${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" NOT On-time\n`);
+                        //console.log
+                        vAssignmentTurninaArray.push(`${fMySpace()}${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" Late\n`);
                         vTotalNumberOfAssignmentsNotOnTime++
                     }
                 }
 
                 break;
             case 1:
-
                 //#endregion display total Assignments turned in on-time vs total possible
+                console.log(`Total number of assignments turned in ON-TIME is ${vTotalNumberOfAssignmentsOntime} out of ${vTotalNumberOfAssignmentTurnins}, (${(vTotalNumberOfAssignmentsOntime / vTotalNumberOfAssignmentTurnins).toPrecision(2) * 100}%)`)
+                break;
+            case 2:
+                //#endregion display total Assignments turned in on-time vs total possible
+                console.log(`Total number of assignments turned in LATE is ${vTotalNumberOfAssignmentsNotOnTime} out of ${vTotalNumberOfAssignmentTurnins}, (${(vTotalNumberOfAssignmentsNotOnTime / vTotalNumberOfAssignmentTurnins).toPrecision(2) * 100}%)`)
                 break;
 
             default:
                 console.log("No Argument");
-
             //#region display total Assignments turned in late vs total possible
             //#endregion display total Assignments turned in late vs total possible
 
         }
     }
+    console.log(`Assignments turned in on-time and otherwise: (${LearnerSubmissions.length}-Items)\n`);
+    let i = 0;
 
-    fSwitch(0);
+    while (i < vTotalNumberOfAssignmentTurnins) {
+        console.log(vAssignmentTurninaArray[i]);
+        i++
+    }
+
+    function fMySpace() {
+        return "      "
+    }
 }
 
 //#endregion Function
