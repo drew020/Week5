@@ -119,11 +119,11 @@ const LearnerSubmissions = [
 //#endregion Objects and array
 
 //#region main process
-//Avoid using global variables - as such all variables are scoped within main function. 
+//Avoid using global variables - as such, all variables are scoped within main function. 
 getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 //#endregion main process
 
-//#region Functions
+//#region Function
 function getLearnerData(course, ag, submissions) {
 
     //#region Function local Variables 
@@ -133,13 +133,14 @@ function getLearnerData(course, ag, submissions) {
 
     //for the switch
     let vboolgate1 = false;
-    let vboolgate2 = false;
     // Statistics
     let vTotalNumberOfStudent = 0;
     let vTotalNumberOfAssignments = 0;
     let vTotalNumberOfPossibleAssignmentTurnins = 0;
     let vTotalNumberOfAssignmentTurnins = 0;
     let vTotalPossibleAssignmentPoint = 0;
+    let vTotalNumberOfAssignmentsOntime = 0;
+    let vTotalNumberOfAssignmentsNotOnTime = 0;
     // Array Sets: ALL ARE CONST
     const vUniqueLearnerIDCount = [];
     const vAssignmentNameArray = [];
@@ -199,15 +200,6 @@ function getLearnerData(course, ag, submissions) {
     console.log(`Total number of assignments turned in: ${vTotalNumberOfAssignmentTurnins} out of ${vTotalNumberOfPossibleAssignmentTurnins} (${(vTotalNumberOfAssignmentTurnins / vTotalNumberOfPossibleAssignmentTurnins).toPrecision(2) * 100}%)`);
     //#endregion Total number of assignments turned-in to total possible
 
-
-
-    //#region display total Assignments turned in on-time vs total possible
-
-    //#endregion display total Assignments turned in on-time vs total possible
-
-    // display total Assignments turned in late vs total possible
-
-
     // display avg total assignment turn in of student
     // display avg grade of student of submissions.
     // display avg grade per assignment of submissions.
@@ -238,18 +230,56 @@ function getLearnerData(course, ag, submissions) {
         vTotalPossibleAssignmentPoint += AssignmentGroup.assignments[i].points_possible;
     }
 
-        function fAssignmentWeightString(lLength/* : number */, lName/* : Array */, lWeight/* : Array */) {
+    function fAssignmentWeightString(lLength/* : number */, lName/* : Array */, lWeight/* : Array */) {
 
         for (let i = 0; i < lLength; i++) {
             console.log(`      Name: ${lName[i]}\n      Point Value: ${lWeight[i]}\n      Grade Weight: ${(lWeight[i] / vTotalPossibleAssignmentPoint).toPrecision(2) * 100}%\n`);
         }
     }
 
-    console.log("Assignment Names and weights: " + "(" + vTotalNumberOfAssignments + "-Items)");
+    console.log(`Assignment Names and weights: (+ ${vTotalNumberOfAssignments}-Items)\n`);
     fAssignmentWeightString(vTotalNumberOfAssignments, vAssignmentNameArray, vAssignmentWeightArray);
     //#endregion display Assignment array
+
+    function fSwitch(nstate) {
+
+        switch (nstate) {
+            case 0:
+                console.log(`Assignments turned in on-time and otherwise: (${LearnerSubmissions.length}-Items)\n`);
+                //#region display total Assignments turned in on-time vs total Turned in
+
+                for (let i = 0; i < LearnerSubmissions.length; i++) {
+                    let lLearnerSubmissionsID = LearnerSubmissions[i].assignment_id;
+                    let lAssignmentIDIndex = lLearnerSubmissionsID - 1;
+
+                    if (new Date(LearnerSubmissions[i].submission.submitted_at) < new Date(AssignmentGroup.assignments[lAssignmentIDIndex].due_at)) {
+                        console.log(`      ${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" On-time\n`);
+                        vTotalNumberOfAssignmentsOntime++;
+                    }
+                    else {
+                        console.log(`      ${LearnerSubmissions[i].learner_id} Submitted "${AssignmentGroup.assignments[lAssignmentIDIndex].name}" NOT On-time\n`);
+                        vTotalNumberOfAssignmentsNotOnTime++
+                    }
+                }
+
+                break;
+            case 1:
+
+                //#endregion display total Assignments turned in on-time vs total possible
+                break;
+
+            default:
+                console.log("No Argument");
+
+            //#region display total Assignments turned in late vs total possible
+            //#endregion display total Assignments turned in late vs total possible
+
+        }
+    }
+
+    fSwitch(0);
 }
 
-//#endregion Functions
+//#endregion Function
 
 
